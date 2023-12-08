@@ -65,23 +65,23 @@ def get_access_token(refresh_token):
 
 def gen_inviteCode(token):
 
-url = f"https://us-central1-foyer-work.cloudfunctions.net/generateReferralCode?print=3274186570&token={token}"
+    url = f"https://us-central1-foyer-work.cloudfunctions.net/generateReferralCode?print=3274186570&token={token}"
 
-headers = {
-        'User-Agent': USER_AGENT,
-        'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'origin': 'https://app.getmerlin.in',
-        'sec-fetch-site': 'cross-site',
-        'sec-fetch-mode': 'cors',
-        'sec-fetch-dest': 'empty',
-        'accept-language': 'zh-CN,zh;q=0.9',
-        'referer': 'https://app.getmerlin.in/'
-    }
-response = requests.get(url, headers=headers).json()
+    headers = {
+            'User-Agent': USER_AGENT,
+            'sec-ch-ua': '"Google Chrome";v="117", "Not;A=Brand";v="8", "Chromium";v="117"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'origin': 'https://app.getmerlin.in',
+            'sec-fetch-site': 'cross-site',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-dest': 'empty',
+            'accept-language': 'zh-CN,zh;q=0.9',
+            'referer': 'https://app.getmerlin.in/'
+        }
+    response = requests.get(url, headers=headers).json()
 
-print(response.get("data",{}).get("inviteId",None))
+    print(response.get("data",{}).get("inviteId",None))
 
 def invite_handler(invite, token):
     url = f"https://us-central1-foyer-work.cloudfunctions.net/invitesHandler?print=1990685894&invite={invite}&token={token}"
@@ -118,7 +118,7 @@ def invite_handler(invite, token):
 if __name__ == '__main__':
     # inviteId = "a1601d23"
     inviteId = input("邀请码如a1601d23：")
-    local_data = "E:\DevProject\JsProject\ChromeExtension\MerlinFree"
+    local_data = "E:\DevProject\PythonProject\AiEra\ExtensionsCrack\MerlinDBMange\Data\Accounts"
     files_to_delete=[]
     invite_num = 0
     refresh_token_list, email_list = get_local_data(local_data)
