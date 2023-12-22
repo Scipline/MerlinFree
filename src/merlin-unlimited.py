@@ -1,8 +1,8 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Time     : 2023/11/19 1:04
+# @Time     : 2023/12/22 17:04
 # @Author   : Scipline
-# @File     : merlin-unlimited。py
+# @File     : merlin-unlimited.py
 # Description: This script is ...
 import json
 import asyncio
@@ -89,12 +89,12 @@ async def get_access_token(refresh_token):
 
 
 async def write_access_tokens_to_file(refresh_tokens):
-    access_token_file = Path("../Data/access_token_fake.txt")
+    access_token_file = Path("../Data/access_token.txt")
     with access_token_file.open("w", encoding='UTF-8') as af:
         af.write("")
-    async with aiohttp.ClientSession() as session:
-        tasks = [get_access_token(token) for token in refresh_tokens]
-        results = await asyncio.gather(*tasks)
+    # async with aiohttp.ClientSession() as session:
+    tasks = [get_access_token(token) for token in refresh_tokens]
+    results = await asyncio.gather(*tasks)
     with access_token_file.open("a", encoding='UTF-8') as af:
         for access_token in results:
             if access_token:
@@ -125,11 +125,11 @@ async def get_chat_token(Idtoken):
 
 
 async def write_chat_tokens_to_file(access_tokens):
-    chat_token_file = Path("../Data/chat_token_fake.txt")
+    chat_token_file = Path("../Data/chat_token.txt")
 
-    async with aiohttp.ClientSession() as session:
-        tasks = [get_chat_token(token) for token in access_tokens]
-        results = await asyncio.gather(*tasks)
+    # async with aiohttp.ClientSession() as session:
+    tasks = [get_chat_token(token) for token in access_tokens]
+    results = await asyncio.gather(*tasks)
     with chat_token_file.open("a", encoding='UTF-8') as af:
         for chat_token in results:
             if chat_token:  # Skip if chat_token is False or None
@@ -172,24 +172,24 @@ def generate_random_emails(email_count):
 
 
 async def write_tokens_to_file(email_count, passwd):
-    access_token_file = Path("../Data/access_token_fake.txt")
-    refresh_token_file = Path("../Data/refresh_token_fake.txt")
+    access_token_file = Path("../Data/access_token.txt")
+    refresh_token_file = Path("../Data/refresh_token.txt")
     # access_token有时效性，不需要保留旧值
     with access_token_file.open("w", encoding='UTF-8') as af:
         af.write("")
     emails = generate_random_emails(email_count)
 
-    async with aiohttp.ClientSession() as session:
-        tasks = [get_account(email, passwd) for email in emails]
-        results = await asyncio.gather(*tasks)
-        for result in results:
-            access_token, refresh_token = result
-            if access_token:
-                with access_token_file.open("a", encoding='UTF-8') as af:
-                    af.write(access_token + "\n")
-            if refresh_token:
-                with refresh_token_file.open("a", encoding='UTF-8') as af:
-                    af.write(refresh_token + "\n")
+    # async with aiohttp.ClientSession() as session:
+    tasks = [get_account(email, passwd) for email in emails]
+    results = await asyncio.gather(*tasks)
+    for result in results:
+        access_token, refresh_token = result
+        if access_token:
+            with access_token_file.open("a", encoding='UTF-8') as af:
+                af.write(access_token + "\n")
+        if refresh_token:
+            with refresh_token_file.open("a", encoding='UTF-8') as af:
+                af.write(refresh_token + "\n")
 
 
 if __name__ == '__main__':
@@ -198,15 +198,15 @@ if __name__ == '__main__':
     if opcode == 1:
         refresh_token_list = get_local_data()
     elif opcode == 2:
-        print("开始获取access_token")
+        print("refresh_token --> access_token")
         refresh_token_file = Path("../Data/refresh_token.txt")
         with refresh_token_file.open("r", encoding='UTF-8') as rf:
             refresh_tokens = rf.read().splitlines()
         # Run the async tasks
         asyncio.run(write_access_tokens_to_file(refresh_tokens))
     elif opcode == 3:
-        print("开始获取chat_token")
-        access_token_file = Path("../Data/access_token_fake.txt")
+        print("access_token --> chat_token")
+        access_token_file = Path("../Data/access_token.txt")
         with access_token_file.open("r", encoding='UTF-8') as af:
             access_tokens = af.read().splitlines()
         # Run the async tasks
