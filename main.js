@@ -1,3 +1,11 @@
+/**
+ * @Author        Scipline
+ * @Since         2023-11-19 04:21:19
+ * @LastEditor    Scipline
+ * @LastEditTime  2023-12-22 17:46:33
+ * @FileName      main.js
+ * @Description   API for getting chat token
+ */
 const express = require('express');
 const fs = require('fs');
 const readline = require('readline');
@@ -42,7 +50,7 @@ const readTokenFile = async(chatTokenPath, counterPath) => {
 };
 
 app.post('/api/authorization', async(req, res) => {
-    const chatTokenPath = path.join(__dirname, 'Data', 'chat_token_fake.txt');
+    const chatTokenPath = path.join(__dirname, 'Data', 'chat_token.txt');
     const counterPath = path.join(__dirname, 'Data', 'counter.txt');
 
     try {
